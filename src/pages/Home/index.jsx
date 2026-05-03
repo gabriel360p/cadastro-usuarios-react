@@ -8,13 +8,13 @@ import {
   FormButton,
   UsersButton,
   IMGContainer,
-} from "../styles/style.js";
+} from "./style.js";
 
-import UsersPNG from "./assets/users.png";
-import TrashSVG from "./assets/trash.svg";
+import UsersPNG from "../../assets/users.png";
+import TrashSVG from "../../assets/trash.svg";
 
 function Home() {
-  return (
+  return (  
     <>
       <MainContainer>
         {/* Posso estilizar assim de forma individual ou posso estilizar no style */}
