@@ -1,6 +1,12 @@
 //Importação de hooks
 import { useState } from "react";
-import { useRef } from "react";//fazer/criar referências/capturar/pegar dados se baseando em uma referência que vamos informar
+import { useRef } from "react"; //fazer/criar referências/capturar/pegar dados se baseando em uma referência que vamos informar
+
+//Importando o navigate, para navegar entras páginas
+import { useNavigate } from "react-router-dom";
+
+//Importando o AXIOS
+import apiAxios from "../../services/api.js";
 
 import {
   MainContainer,
@@ -10,8 +16,11 @@ import {
   Input,
   FormButton,
   UsersButton,
-  IMGContainer,
 } from "./style.js";
+
+//meu botão componente
+import DefaultButton from "../../components/DefaultButton";
+import UsersImage from "../../components/UsersImage";
 
 import UsersPNG from "../../assets/users.png";
 import TrashSVG from "../../assets/trash.svg";
@@ -22,17 +31,30 @@ function Home() {
   const inputName = useRef();
   const inputAge = useRef();
   const inputEmail = useRef();
-  console.log(inputName.current.value)
 
-  function registerNewUser() {
+  async function registerNewUser() {
     // Aqui nessa função vamos mandar os dados para cadastrar os novos usuários, coletamos as informações usando o useRef e vamos mandar para o node.js que vai mandar para o MongoDB
     // console.log(inputName.current.value);
 
     //Capturando os dados dos inputs que a gente quer.
-    inputAge;
-    inputEmail;
-    inputName;
+    const email = inputEmail.current.value;
+    const age = Number(inputAge.current.value);
+    const name = inputName.current.value;
+
+    try {
+      const resposta = await apiAxios.post("/users/create", {
+        email: email,
+        age: age,
+        name: name,
+      });
+      console.log(resposta);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  //iniciando a variável do Hook de navegação
+  const navigate = useNavigate();
 
   return (
     <>
@@ -40,9 +62,7 @@ function Home() {
         {/* Posso estilizar assim de forma individual ou posso estilizar no style */}
         {/* <p style={{color:'red', fontSize:30}}> */}
 
-        <IMGContainer>
-          <img src={UsersPNG} alt="users-png" />
-        </IMGContainer>
+        <UsersImage />
 
         <Form>
           <Title>Cadastro de Usuário</Title>
@@ -52,10 +72,24 @@ function Home() {
             <Input type="number" placeholder="Idade" ref={inputAge} />
           </RowContainerInputs>
           <Input type="email" placeholder="Email" ref={inputEmail} />
-          <FormButton type="button" onClick={registerNewUser}>
+          <DefaultButton
+            tema="primario"
+            type="button"
+            onClick={registerNewUser}
+          >
             Cadastrar
-          </FormButton>
-          <UsersButton type="button">Usuários</UsersButton>
+
+          </DefaultButton>
+          <DefaultButton
+          // {/* Inserindo a navegação: */}
+            onClick={() => navigate("/users/list")}
+            // Sim é uma função chamando uma função
+
+            tema="secundario"
+            type="button"
+          >
+            Usuários
+          </DefaultButton>
         </Form>
       </MainContainer>
     </>
