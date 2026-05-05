@@ -7,7 +7,12 @@ export const DefaultButtonStyle = styled.button`
   border: none;
   color: white;
   //capturando os valores de propriedade do meu componente e alterando o tema do meu botão! Incrivel!!
-  background:   ${(props) => props.tema === 'primario' ? 'linear-gradient(to right, #fe7e5d, #7f3841)' : 'transparent' };
+  background: ${(props) =>
+    props.tema === "primario"
+      ? "linear-gradient(to right, #fe7e5d, #7f3841)"
+      : "transparent"};
+  border: ${(props) =>
+    props.tema === "secundario" ? "solid 1px white" : "none"};
 
   &:hover {
     opacity: 0.8;
